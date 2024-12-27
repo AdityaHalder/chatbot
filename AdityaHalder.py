@@ -145,6 +145,12 @@ chat members in your chat.**"""
 @bot.on_message(filters.text & ~filters.bot)
 async def start_chat_(client, message):
     if not message.command:
+        if message.reply_to_message:
+            if message.reply_to_message.sender_chat:
+                return
+            if message.reply_to_message.from_user:
+                if message.reply_to_message.from_user.id != bot.me.id:
+                    return
         try:
             chat_id = message.chat.id
             await bot.send_chat_action(chat_id, ChatAction.TYPING)
