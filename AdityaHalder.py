@@ -129,7 +129,7 @@ async def chat_with_gpt(query, model="gpt-4o-mini"):
                 }
             ],
         )
-        return response
+        return response["choices"][0]["message"]["content"].strip()
     except Exception as e:
         return f"Error: {str(e)}"
 
