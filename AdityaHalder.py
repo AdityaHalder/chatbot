@@ -1,6 +1,7 @@
-import asyncio, logging, openai, os, sys
+import asyncio, logging, os, sys
 
 from os import getenv
+from openai import OpenAI
 from dotenv import load_dotenv
 from typing import Union, List, Pattern
 from pyrogram import Client, filters, idle
@@ -113,16 +114,18 @@ async def main():
     
 
 async def chat_with_gpt(query, model="gpt-3.5-turbo"):
-    openai.api_key = OPENAI_API_KEY
     try:
-        response = openai.ChatCompletion.create(
-            model=model,
+        client = OpenAI(api_key=OPENAI_API_KEY)
+        response = client.chat.completions.create(
             messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": query}
-            ]
+                {
+                   "role": "user",
+                   "content": query,
+                }
+            ],
+            model=model,
         )
-        return response["choices"][0]["message"]["content"].strip()
+        return response
     except Exception as e:
         return f"Error: {str(e)}"
 
