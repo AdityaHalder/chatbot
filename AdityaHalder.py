@@ -57,12 +57,48 @@ bot = Client(
 mdb = AsyncIOMotorClient(MONGO_DB_URL).test
 
 
-
-
-
-
-
 async def main():
+    if API_ID == 0:
+        logs.info("'API_ID' - Not Found !!")
+        sys.exit()
+    if not API_HASH:
+        logs.info("'API_HASH' - Not Found !!")
+        sys.exit()
+    if not BOT_TOKEN:
+        logs.info("'BOT_TOKEN' - Not Found !!")
+        sys.exit()
+    if not MONGO_DB_URL:
+        logs.info("'MONGO_DB_URL' - Not Found !!")
+        # sys.exit()
+    if OWNER_ID == 0:
+        logs.info("'OWNER_ID' - Not Found !!")
+        sys.exit()
+    if LOG_GROUP_ID == 0:
+        logs.info("'LOG_GROUP_ID' - Not Found !!")
+        sys.exit()
+    if not START_IMAGE_URL:
+        logs.info("'START_IMAGE_URL' - Not Found !!")
+        # sys.exit()
+    for file in os.listdir():
+        if file.endswith(".session"):
+            os.remove(file)
+    for file in os.listdir():
+        if file.endswith(".session-journal"):
+            os.remove(file)
+    try:
+        await bot.start()
+        try:
+            await bot.send_message(
+                LOG_GROUP_ID, "**✅ Now, I am Alive❗**"
+            )
+        except Exception:
+            logs.info(f"🚫 Failed to access log group !!\n⚠️ Reason: {e}")
+            sys.exit()
+        logs.info("✅ Bot Started❗")
+        await idle()
+    except Exception as e:
+        logs.info(f"🚫 Failed to start bot !!\n⚠️ Reason: {e}")
+        sys.exit()
     
 
 
