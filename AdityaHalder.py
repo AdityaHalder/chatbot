@@ -145,11 +145,19 @@ chat members in your chat.**"""
 @bot.on_message(filters.text & ~filters.bot)
 async def start_chat_(client, message):
     if not message.command:
+        if message.from_user:
+            user_id = message.from_user.id
+        elif message.sender_chat:
+            user_id = message.sender_chat.id
         if message.reply_to_message:
-            if message.reply_to_message.sender_chat:
-                return
             if message.reply_to_message.from_user:
-                if message.reply_to_message.from_user.id != bot.me.id:
+                if (
+                    message.reply_to_message.from_user.id != bot.me.id
+                    or message.reply_to_message.from_user.id != user_id
+                ):
+                    return
+            if message.reply_to_message.sender_chat:
+                if message.reply_to_message.sender_chat.id != user_id:
                     return
         try:
             chat_id = message.chat.id
