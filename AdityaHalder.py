@@ -1,4 +1,4 @@
-import asyncio, logging, openapi, os, sys
+import asyncio, logging, openai, os, sys
 
 from os import getenv
 from dotenv import load_dotenv
@@ -112,7 +112,18 @@ async def main():
         sys.exit()
     
 
-
+async def chat_with_gpt(query, model="gpt-3.5-turbo"):
+    try:
+        response = openai.ChatCompletion.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": query}
+            ]
+        )
+        return response["choices"][0]["message"]["content"].strip()
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 
 
@@ -142,6 +153,14 @@ chat members in your chat.**"""
     )
     return await message.reply_text(text=caption, reply_markup=buttons)
 
+
+
+@bot.on_message(filters.command("start") & filters.private)
+async def start_message_private(client, message):
+    if not message.command:
+        query = message.text
+        response = await chat_with_gpt(query)
+        return await message.reply_text(response)
 
 
 
