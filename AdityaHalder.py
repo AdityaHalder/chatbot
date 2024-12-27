@@ -153,6 +153,7 @@ chat members in your chat.**"""
 async def start_chat_(client, message):
     if not message.command:
         try:
+            chat_id = message.chat.id
             await bot.send_chat_action(chat_id, ChatAction.TYPING)
             try:
                 aiclient = OpenAI(api_key=OPENAI_API_KEY)
