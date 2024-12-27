@@ -26,6 +26,7 @@ logging.basicConfig(
 )
 
 logging.getLogger("asyncio").setLevel(logging.ERROR)
+logging.getLogger("httpx").setLevel(logging.ERROR)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
 
 
