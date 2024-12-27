@@ -165,7 +165,7 @@ async def start_chat_(client, message):
             try:
                 aiclient = OpenAI(api_key=OPENAI_API_KEY)
                 response = aiclient.chat.completions.create(
-                    model="gpt-4.o-mini",
+                    model="gpt-4o-mini",
                     messages=[
                         {
                             "role": "user",
