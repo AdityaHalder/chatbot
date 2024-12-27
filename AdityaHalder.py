@@ -113,6 +113,7 @@ async def main():
     
 
 async def chat_with_gpt(query, model="gpt-3.5-turbo"):
+    openai.api_key = OPENAI_API_KEY
     try:
         response = openai.ChatCompletion.create(
             model=model,
