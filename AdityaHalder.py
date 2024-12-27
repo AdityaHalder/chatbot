@@ -123,13 +123,14 @@ async def chat_with_gpt(query, model="gpt-4o-mini"):
                     "role": "user",
                     "content": [
                         {
-                            "type": "text", "text": query
+                            "type": "text",
+                            "text": query,
                         },
                     ],
                 }
             ],
         )
-        return response[0]
+        return response.choices[0].message.content
     except Exception as e:
         return f"Error: {str(e)}"
 
