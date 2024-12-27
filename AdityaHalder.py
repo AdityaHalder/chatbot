@@ -30,7 +30,7 @@ if os.path.exists("Config.env"):
 
 API_ID = int(getenv("API_ID", 0))
 API_HASH = getenv("API_HASH", None)
-STRING_SESSION = getenv("STRING_SESSION", None)
+BOT_TOKEN = getenv("BOT_TOKEN", None)
 MONGO_DB_URL = getenv("MONGO_DB_URL", None)
 OWNER_ID = int(getenv("OWNER_ID", 0))
 LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", 0))
@@ -47,14 +47,14 @@ def rgx(pattern: Union[str, Pattern]):
     return filters.regex(pattern)
 
 
-aditya = Client(
+bot = Client(
     name="adixd",
     api_id=API_ID,
     api_hash=API_HASH,
     bot_token=BOT_TOKEN,
 )
 
-mongodb = AsyncIOMotorClient(MONGO_DB_URL).test
+mdb = AsyncIOMotorClient(MONGO_DB_URL).test
 
 
 
@@ -63,10 +63,42 @@ mongodb = AsyncIOMotorClient(MONGO_DB_URL).test
 
 
 async def main():
+    
 
 
 
 
 
 
+@bot.on_message(filters.command("start") & filters.private)
+async def start_message_private(client, message):
+    user_id = message.from_user.id
+    mention = message.from_user.mention
+    caption = f"""**✅ Hello, {mention},
+
+❍  I am an advanced & powerful
+ai chat bot powered by open ai, I
+can help you if you need.
+
+❍  You can add me in your chat,
+i can chat with known/unknown
+chat members in your chat.**"""
+    buttons = InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(
+                    text="🥀 Add Me In Your Chat ✨",
+                    url=f"https://t.me/{bot.me.username}?startgroup=true",
+                )
+            ]
+        ]
+    )
+    return await message.reply_text(text=caption, reply_markup=buttons)
+
+
+
+
+
+if __name__ == "__main__":
+    loop.run_until_complete(main())
 
