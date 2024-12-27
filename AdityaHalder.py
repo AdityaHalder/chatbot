@@ -30,7 +30,7 @@ if os.path.exists("Config.env"):
 
 API_ID = int(getenv("API_ID", 0))
 API_HASH = getenv("API_HASH", None)
-BOT_TOKEN = getenv("BOT_TOKEN", None)
+STRING_SESSION = getenv("STRING_SESSION", None)
 MONGO_DB_URL = getenv("MONGO_DB_URL", None)
 OWNER_ID = int(getenv("OWNER_ID", 0))
 LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", 0))
@@ -47,12 +47,26 @@ def rgx(pattern: Union[str, Pattern]):
     return filters.regex(pattern)
 
 
-bot = Client(
-    name="Bot",
+aditya = Client(
+    name="adixd",
     api_id=API_ID,
     api_hash=API_HASH,
     bot_token=BOT_TOKEN,
 )
 
 mongodb = AsyncIOMotorClient(MONGO_DB_URL).test
+
+
+
+
+
+
+
+async def main():
+
+
+
+
+
+
 
