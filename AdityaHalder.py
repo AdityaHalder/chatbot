@@ -153,7 +153,7 @@ async def start_chat_(client, message):
             if message.reply_to_message.from_user:
                 if (
                     message.reply_to_message.from_user.id != bot.me.id
-                    or message.reply_to_message.from_user.id != user_id
+                    and message.reply_to_message.from_user.id != user_id
                 ):
                     return
             if message.reply_to_message.sender_chat:
