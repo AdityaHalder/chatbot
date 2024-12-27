@@ -155,7 +155,7 @@ chat members in your chat.**"""
 
 
 
-@bot.on_message(filters.txt & ~filters.bot)
+@bot.on_message(filters.text & ~filters.bot)
 async def start_chat_(client, message):
     if not message.command:
         query = message.text
