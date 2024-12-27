@@ -5,8 +5,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from typing import Union, List, Pattern
 from pyrogram import Client, filters, idle
-from pyrogram.enums import ChatMembersFilter
-from pyrogram.errors import ChatAdminRequired
+from pyrogram.enums import ChatAction
 from pyrogram.types import (
     ChatPermissions,
     InlineKeyboardMarkup,
@@ -28,6 +27,7 @@ logging.basicConfig(
 
 logging.getLogger("asyncio").setLevel(logging.ERROR)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
+
 
 logs = logging.getLogger()
 loop = asyncio.get_event_loop()
@@ -115,22 +115,7 @@ async def main():
 
 async def chat_with_gpt(query, model="gpt-4o-mini"):
     try:
-        client = OpenAI(api_key=OPENAI_API_KEY)
-        response = client.chat.completions.create(
-            model=model,
-            messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": query,
-                        },
-                    ],
-                }
-            ],
-        )
-        return response.choices[0].message.content
+        
     except Exception as e:
         return f"Error: {str(e)}"
 
@@ -167,9 +152,31 @@ chat members in your chat.**"""
 @bot.on_message(filters.text & ~filters.bot)
 async def start_chat_(client, message):
     if not message.command:
-        query = message.text
-        response = await chat_with_gpt(query)
-        return await message.reply_text(response)
+        try:
+            await bot.send_chat_action(chat_id, ChatAction.TYPING)
+            try:
+                aiclient = OpenAI(api_key=OPENAI_API_KEY)
+                response = aiclient.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": message.text,
+                                },
+                            ],
+                        }
+                    ],
+                )
+                response_message = response.choices[0].message.content
+                return await message.reply_text(response_message)
+            except Exception:
+                return await message.reply_text("🤭")
+        except Exception:
+            return
+        
 
 
 
