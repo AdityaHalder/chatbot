@@ -114,14 +114,6 @@ async def main():
         sys.exit()
     
 
-async def chat_with_gpt(query, model="gpt-4o-mini"):
-    try:
-        
-    except Exception as e:
-        return f"Error: {str(e)}"
-
-
-
 
 @bot.on_message(filters.command("start") & filters.private)
 async def start_message_private(client, message):
@@ -159,7 +151,7 @@ async def start_chat_(client, message):
             try:
                 aiclient = OpenAI(api_key=OPENAI_API_KEY)
                 response = aiclient.chat.completions.create(
-                    model=model,
+                    model="gpt-4o-mini",
                     messages=[
                         {
                             "role": "user",
