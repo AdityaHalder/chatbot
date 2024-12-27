@@ -4,6 +4,13 @@ from os import getenv
 from dotenv import load_dotenv
 from typing import Union, List, Pattern
 from pyrogram import Client, filters, idle
+from pyrogram.enums import ChatMembersFilter
+from pyrogram.errors import ChatAdminRequired
+from pyrogram.types import (
+    ChatPermissions,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton
+)
 from logging.handlers import RotatingFileHandler
 from motor.motor_asyncio import AsyncIOMotorClient
 
