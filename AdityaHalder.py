@@ -180,7 +180,8 @@ async def start_chat_(client, message):
                 )
                 response_message = response.choices[0].message.content
                 return await message.reply_text(response_message)
-            except Exception:
+            except Exception as e:
+                logs.info("🚫 Error: {e}")
                 return await message.reply_text("🤭")
         except Exception:
             return
