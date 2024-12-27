@@ -113,17 +113,21 @@ async def main():
         sys.exit()
     
 
-async def chat_with_gpt(query, model="gpt-3.5-turbo"):
+async def chat_with_gpt(query, model="gpt-4o-mini"):
     try:
         client = OpenAI(api_key=OPENAI_API_KEY)
         response = client.chat.completions.create(
+            model="gpt-4o-mini",
             messages=[
                 {
-                   "role": "user",
-                   "content": query,
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text", "text": query
+                        },
+                    ],
                 }
             ],
-            model=model,
         )
         return response
     except Exception as e:
