@@ -155,8 +155,8 @@ chat members in your chat.**"""
 
 
 
-@bot.on_message(filters.command("start") & filters.private)
-async def start_message_private(client, message):
+@bot.on_message(filters.txt & ~filters.bot)
+async def start_chat_(client, message):
     if not message.command:
         query = message.text
         response = await chat_with_gpt(query)
