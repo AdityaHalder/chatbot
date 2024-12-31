@@ -1,7 +1,6 @@
-import asyncio, logging, os, sys
+import asyncio, logging, os, openai, sys
 
 from os import getenv
-from openai import OpenAI
 from dotenv import load_dotenv
 from typing import Union, List, Pattern
 from pyrogram import Client, filters, idle
@@ -83,6 +82,7 @@ async def main():
     if not OPENAI_API_KEY:
         logs.info("'OPENAI_API_KEY' - Not Found !!")
         # sys.exit()
+    openai.api_key = OPENAI_API_KEY
     if OWNER_ID == 0:
         logs.info("'OWNER_ID' - Not Found !!")
         sys.exit()
@@ -163,22 +163,12 @@ async def start_chat_(client, message):
             chat_id = message.chat.id
             await bot.send_chat_action(chat_id, ChatAction.TYPING)
             try:
-                aiclient = OpenAI(api_key=OPENAI_API_KEY)
-                response = aiclient.chat.completions.create(
-                    model="gpt-4o-mini",
-                    messages=[
-                        {
-                            "role": "user",
-                            "content": [
-                                {
-                                    "type": "text",
-                                    "text": message.text,
-                                },
-                            ],
-                        }
-                    ],
+                response = openai.Completion.create(
+                    engine="text-davinci-003",
+                    prompt=prompt,
+                    max_tokens=150
                 )
-                response_message = response.choices[0].message.content
+                response_message = response.choices[0].text.strip()
                 return await message.reply_text(response_message)
             except Exception as e:
                 logs.info(f"🚫 Error: {e}")
