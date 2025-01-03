@@ -141,6 +141,36 @@ chat members in your chat.**"""
     return await message.reply_text(text=caption, reply_markup=buttons)
 
 
+@bot.on_message(cdx(["caesar", "cipher"]) & filters.private)
+async def caesar_cipher_private(client, message):
+    if len(message.command) < 2:
+        return await message.reply_text(
+            "**⚠️ Give me a some text to convert❗...**"
+        )
+    aux = await message.reply_text("**🔄 Converting ✨...**")
+    query = message.text.split(query)
+    strings = "!\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+    output_text = ""
+    for s in query:
+        x = strings.split(s)[1]
+        lenth_x = len(x)
+        if lenth_x > 2:
+            o_text = x[2]
+        elif lenth_x == 0:
+            o_text = strings[2]
+
+        elif lenth_x == 1:
+            o_text = strings[1]
+
+        elif lenth_x == 2:
+            o_text = strings[0]
+        output_text = output_text + o_text
+    return await aux.edit(f"**🐬 Converted text:**\n```output\n{output_text}```")
+
+
+
+
+
 
 @bot.on_message(filters.text & ~filters.bot)
 async def start_chat_(client, message):
