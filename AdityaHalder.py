@@ -148,7 +148,7 @@ async def caesar_cipher_private(client, message):
             "**⚠️ Give me a some text to convert❗...**"
         )
     aux = await message.reply_text("**🔄 Converting ✨...**")
-    query = message.text.split(query)
+    query = message.text.split(None, 1)[1]
     strings = "!\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
     output_text = ""
     for s in query:
