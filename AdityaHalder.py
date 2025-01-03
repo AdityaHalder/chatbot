@@ -192,14 +192,7 @@ async def start_chat_(client, message):
         try:
             chat_id = message.chat.id
             await bot.send_chat_action(chat_id, ChatAction.TYPING)
-            try:
-                response = openai.Completion.create(
-                    engine="text-davinci-003",
-                    prompt=message.text,
-                    max_tokens=150
-                )
-                response_message = response.choices[0].text.strip()
-                return await message.reply_text(response_message)
+            return await message.reply_text("😎")
             except Exception as e:
                 logs.info(f"🚫 Error: {e}")
                 return await message.reply_text("🤭")
