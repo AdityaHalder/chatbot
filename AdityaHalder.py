@@ -1,4 +1,4 @@
-import asyncio, logging, os, openai, sys
+import asyncio, logging, os, sys
 
 from os import getenv
 from dotenv import load_dotenv
