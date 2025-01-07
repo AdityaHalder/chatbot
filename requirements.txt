@@ -1,7 +1,7 @@
 asyncio==3.4.3
 httpx==0.25.0
+judini==0.1.12
 motor==3.6.0
-openai==1.58.1
 python-dotenv==1.0.1
 tgcrypto==1.2.5
 https://github.com/KurimuzonAkuma/pyrogram/archive/dev.zip
