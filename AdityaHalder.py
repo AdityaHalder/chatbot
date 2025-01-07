@@ -215,8 +215,9 @@ async def start_chat_(client, message):
         try:
             chat_id = message.chat.id
             await bot.send_chat_action(chat_id, ChatAction.TYPING)
-            response = await chat_with_gpt(message.text)
-            return await message.reply_text(response)
+            try:
+                response = await chat_with_gpt(message.text)
+                return await message.reply_text(response)
             except Exception as e:
                 logs.info(f"🚫 Error: {e}")
                 return await message.reply_text("🤭")
