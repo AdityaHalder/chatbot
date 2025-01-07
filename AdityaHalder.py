@@ -3,6 +3,7 @@ import asyncio, logging, os, openai, sys
 from os import getenv
 from dotenv import load_dotenv
 from typing import Union, List, Pattern
+from judini import CodeGPTPlus
 from pyrogram import Client, filters, idle
 from pyrogram.enums import ChatAction
 from pyrogram.types import (
@@ -40,7 +41,9 @@ API_ID = int(getenv("API_ID", 0))
 API_HASH = getenv("API_HASH", None)
 BOT_TOKEN = getenv("BOT_TOKEN", None)
 MONGO_DB_URL = getenv("MONGO_DB_URL", None)
-OPENAI_API_KEY = getenv("OPENAI_API_KEY", None)
+CODEGPT_API_KEY = getenv("CODEGPT_API_KEY", None)
+CODEGPT_ORG_ID = getenv("CODEGPT_ORG_ID", None)
+CODEGPT_AGENT_ID = getenv("CODEGPT_AGENT_ID", None)
 OWNER_ID = int(getenv("OWNER_ID", 0))
 LOG_GROUP_ID = int(getenv("LOG_GROUP_ID", 0))
 START_IMAGE_URL = getenv("START_IMAGE_URL", None)
@@ -79,10 +82,15 @@ async def main():
     if not MONGO_DB_URL:
         logs.info("'MONGO_DB_URL' - Not Found !!")
         # sys.exit()
-    if not OPENAI_API_KEY:
-        logs.info("'OPENAI_API_KEY' - Not Found !!")
-        # sys.exit()
-    openai.api_key = OPENAI_API_KEY
+    if not CODEGPT_API_KEY:
+        logs.info("'CODEGPT_API_KEY' - Not Found !!")
+        sys.exit()
+    if not CODEGPT_ORG_ID:
+        logs.info("'CODEGPT_ORG_ID' - Not Found !!")
+        sys.exit()
+    if not CODEGPT_AGENT_ID:
+        logs.info("'CODEGPT_AGENT_ID' - Not Found !!")
+        sys.exit()
     if OWNER_ID == 0:
         logs.info("'OWNER_ID' - Not Found !!")
         sys.exit()
@@ -113,6 +121,21 @@ async def main():
         logs.info(f"🚫 Failed to start bot !!\n⚠️ Reason: {e}")
         sys.exit()
     
+
+
+async def chat_with_gpt(query):
+    codegpt = CodeGPTPlus(
+        api_key=CODEGPT_API_KEY, org_id=CODEGPT_ORG_ID
+    )
+    messages = [
+        {
+            "role": "user", "content": query
+        }
+    ]
+    chat = codegpt.chat_completion(
+        agent_id=CODEGPT_AGENT_ID, messages=messages
+    )
+    return chat
 
 
 @bot.on_message(filters.command("start") & filters.private)
@@ -192,7 +215,8 @@ async def start_chat_(client, message):
         try:
             chat_id = message.chat.id
             await bot.send_chat_action(chat_id, ChatAction.TYPING)
-            return await message.reply_text("😎")
+            response = await chat_with_gpt(message.text)
+            return await message.reply_text(response)
             except Exception as e:
                 logs.info(f"🚫 Error: {e}")
                 return await message.reply_text("🤭")
