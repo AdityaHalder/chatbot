@@ -121,12 +121,11 @@ async def main():
         logs.info(f"🚫 Failed to start bot !!\n⚠️ Reason: {e}")
         sys.exit()
     
-
+codegpt = CodeGPTPlus(
+    api_key=CODEGPT_API_KEY, org_id=CODEGPT_ORG_ID
+)
 
 async def chat_with_gpt(query):
-    codegpt = CodeGPTPlus(
-        api_key=CODEGPT_API_KEY, org_id=CODEGPT_ORG_ID
-    )
     messages = [
         {
             "role": "user", "content": query
